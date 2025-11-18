@@ -35,7 +35,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.19.0' # Updated to match the required Node.js version
+          node-version: '22.12.0' # Updated to a compatible Node.js version
       - name: Change to app directory
         run: cd AbacusFileFE
 
