@@ -48,7 +48,7 @@ jobs:
         working-directory: ./AbacusFileFE
 
       - name: Build project
-        run: npm run build
+        run: REACT_APP_BASE_URL=${{ secrets.REACT_APP_BASE_URL }} npm run build
         working-directory: ./AbacusFileFE
 
       - name: Build And Deploy
