@@ -44,7 +44,8 @@ jobs:
         working-directory: ./AbacusFileFE
 
       - name: Add environment variables
-        run: echo "REACT_APP_BASE_URL=${{ secrets.REACT_APP_BASE_URL }}" >> .env
+        run: |
+          echo "REACT_APP_BASE_URL=${{ secrets.REACT_APP_BASE_URL }}" >> $GITHUB_ENV
         working-directory: ./AbacusFileFE
 
       - name: Build project
