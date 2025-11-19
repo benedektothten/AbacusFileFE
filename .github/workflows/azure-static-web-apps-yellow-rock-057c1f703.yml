@@ -48,8 +48,14 @@ jobs:
         run: npm install
         working-directory: ./AbacusFileFE
 
-      - name: Build project
+      - name: Set Environment Variables
+        run: |
+          echo "REACT_APP_BASE_URL=${{ secrets.REACT_APP_BASE_URL }}" >> $GITHUB_ENV
+
+      - name: Build Application
         run: npm run build
+        env:
+          REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
         working-directory: ./AbacusFileFE
 
       - name: Build And Deploy
