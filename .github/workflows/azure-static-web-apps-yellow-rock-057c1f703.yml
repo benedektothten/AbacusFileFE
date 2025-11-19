@@ -50,12 +50,12 @@ jobs:
 
       - name: Set Environment Variables
         run: |
-          echo "REACT_APP_BASE_URL=${{ secrets.REACT_APP_BASE_URL }}" >> $GITHUB_ENV
+          echo "VITE_REACT_APP_BASE_URL=${{ secrets.REACT_APP_BASE_URL }}" >> $GITHUB_ENV
 
       - name: Build Application
         run: npm run build
         env:
-          REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
+          VITE_REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
         working-directory: ./AbacusFileFE
 
       - name: Build And Deploy
