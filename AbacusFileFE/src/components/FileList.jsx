@@ -3,6 +3,11 @@ import { Box, Typography, List, ListItem, ListItemText, Button, Paper, CircularP
 
 const FileList = ({ files, onDownload, onDelete, downloadingFile }) => {
   const [deletingFile, setDeletingFile] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredFiles = files.filter((file) =>
+    file.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleDeleteClick = async (fileName) => {
     setDeletingFile(fileName); // Set the file being deleted
@@ -19,11 +24,11 @@ const FileList = ({ files, onDownload, onDelete, downloadingFile }) => {
         Uploaded Files
       </Typography>
       <List>
-        {files.map((file, index) => (
+        {filteredFiles.map((file, index) => (
           <ListItem key={index} divider sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <ListItemText primary={decodeURIComponent(file.name)} sx={{ marginRight: 2 }} />
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            {downloadingFile === file.name && <CircularProgress size={24} sx={{ marginLeft: 1 }} />} {/* Show progress bar */}
+              {downloadingFile === file.name && <CircularProgress size={24} sx={{ marginLeft: 1 }} />} {/* Show progress bar */}
               <Button
                 variant="outlined"
                 color="primary"
@@ -33,7 +38,7 @@ const FileList = ({ files, onDownload, onDelete, downloadingFile }) => {
               >
                 Download
               </Button>
-               {deletingFile === file.name && <CircularProgress size={24} sx={{ marginLeft: 1 }} />} {/* Show progress bar */}
+              {deletingFile === file.name && <CircularProgress size={24} sx={{ marginLeft: 1 }} />} {/* Show progress bar */}
               <Button
                 variant="outlined"
                 color="secondary"

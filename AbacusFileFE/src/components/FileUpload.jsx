@@ -25,12 +25,18 @@ const FileUpload = ({ onUpload }) => {
 
     try {
       await onUpload(file, (event) => {
-        console.log('Upload progress event:', event);
         if (event.lengthComputable) {
           const percentComplete = Math.round((event.loaded / event.total) * 100);
           setProgress(percentComplete);
           if (percentComplete === 100) {
-            setTimeout(() => setSavingMessage(true), 2000); // Show message after 2 seconds
+            const savingTimeout = setTimeout(() => {
+              if (savingMessage === false) {
+                setSavingMessage(true);
+              }
+            }, 1200); // Show message after 2 seconds if still waiting
+
+            // Clear timeout if upload completes
+            setTimeout(() => clearTimeout(savingTimeout), 2000);
           }
         }
       });
@@ -39,6 +45,7 @@ const FileUpload = ({ onUpload }) => {
     } finally {
       setUploading(false);
       setSavingMessage(false);
+      console.log('Upload process finished.');
     }
   };
 
