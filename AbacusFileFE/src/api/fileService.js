@@ -4,6 +4,7 @@ const BASE_URL = import.meta.env.REACT_APP_BASE_URL || 'http://localhost:8080';
 
 export const getAllFiles = async () => {
   try {
+    console.log('env:', import.meta.env.REACT_APP_BASE_URL);
     const response = await axios.get(`${BASE_URL}/api/file`);
     return response.data;
   } catch (error) {

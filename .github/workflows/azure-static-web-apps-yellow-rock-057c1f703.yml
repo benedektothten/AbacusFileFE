@@ -32,24 +32,24 @@ jobs:
                const coredemo = require('@actions/core')
                return await coredemo.getIDToken()
            result-encoding: string
+           
+      - name: Add environment variables
+        run: |
+          echo "REACT_APP_BASE_URL=${{ secrets.REACT_APP_BASE_URL }}" >> $GITHUB_ENV
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '22.12.0' # Updated to a compatible Node.js version
+
       - name: Change to app directory
         run: cd AbacusFileFE
-
+       
       - name: Install dependencies
         run: npm install
         working-directory: ./AbacusFileFE
 
-      - name: Add environment variables
-        run: |
-          echo "REACT_APP_BASE_URL=${{ secrets.REACT_APP_BASE_URL }}" >> $GITHUB_ENV
-        working-directory: ./AbacusFileFE
-
       - name: Build project
-        run: REACT_APP_BASE_URL=${{ secrets.REACT_APP_BASE_URL }} npm run build
+        run: npm run build
         working-directory: ./AbacusFileFE
 
       - name: Build And Deploy
