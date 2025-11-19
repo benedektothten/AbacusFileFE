@@ -6,6 +6,7 @@ const FileUpload = ({ onUpload }) => {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [savingMessage, setSavingMessage] = useState(false);
 
   const onDrop = (acceptedFiles) => {
     if (acceptedFiles.length > 0) {
@@ -20,14 +21,24 @@ const FileUpload = ({ onUpload }) => {
 
     setUploading(true);
     setProgress(0);
+    setSavingMessage(false);
 
     try {
-      await onUpload(file);
-      setProgress(100);
+      await onUpload(file, (event) => {
+        console.log('Upload progress event:', event);
+        if (event.lengthComputable) {
+          const percentComplete = Math.round((event.loaded / event.total) * 100);
+          setProgress(percentComplete);
+          if (percentComplete === 100) {
+            setTimeout(() => setSavingMessage(true), 2000); // Show message after 2 seconds
+          }
+        }
+      });
     } catch (error) {
       console.error('Error during upload:', error);
     } finally {
       setUploading(false);
+      setSavingMessage(false);
     }
   };
 
@@ -67,6 +78,11 @@ const FileUpload = ({ onUpload }) => {
         <Box width="100%">
           <LinearProgress variant="determinate" value={progress} />
         </Box>
+      )}
+      {savingMessage && (
+        <Typography variant="body2" color="textSecondary" align="center" sx={{ marginTop: 1 }}>
+          Upload is done. Saving the file to cloud storage, please wait...
+        </Typography>
       )}
     </Paper>
   );

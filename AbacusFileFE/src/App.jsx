@@ -39,9 +39,9 @@ const App = () => {
     fetchFiles();
   }, []);
 
-  const handleUpload = async (file) => {
+  const handleUpload = async (file, onProgress) => {
     try {
-      await uploadFile(file);
+      await uploadFile(file, onProgress);
       const updatedFiles = await getAllFiles();
       setFiles(updatedFiles.map((fileName) => ({ name: fileName })));
     } catch (err) {

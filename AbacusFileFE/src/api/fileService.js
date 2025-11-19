@@ -13,7 +13,7 @@ export const getAllFiles = async () => {
   }
 };
 
-export const uploadFile = async (file, blobName) => {
+export const uploadFile = async (file, onUploadProgress, blobName) => {
   const formData = new FormData();
   console.log('Uploading filedata:', file);
   formData.append('file', file);
@@ -22,11 +22,18 @@ export const uploadFile = async (file, blobName) => {
   }
 
   try {
-    const response = await axios.post(`${BASE_URL}/api/file/upload`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    const config = {
+      onUploadProgress: (event) => {
+        console.log('Progress event:', event);
+        if (event.lengthComputable) {
+          const percentComplete = Math.round((event.loaded / event.total) * 100);
+          console.log(`Progress: ${percentComplete}%`);
+          if (onUploadProgress) {
+            onUploadProgress(event);
+          }
+        }}
+    };
+    const response = await axios.post(`${BASE_URL}/api/file/upload`, formData, config);
     return response.data;
   } catch (error) {
     console.error('Error uploading file:', error);
