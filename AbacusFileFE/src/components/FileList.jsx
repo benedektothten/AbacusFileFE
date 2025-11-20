@@ -20,9 +20,6 @@ const FileList = ({ files, onDownload, onDelete, downloadingFile }) => {
 
   return (
     <Paper elevation={3} sx={{ padding: 2 }}>
-      <Typography variant="h6" gutterBottom>
-        Uploaded Files
-      </Typography>
       <List>
         {filteredFiles.map((file, index) => (
           <ListItem key={index} divider sx={{ display: 'flex', justifyContent: 'space-between' }}>

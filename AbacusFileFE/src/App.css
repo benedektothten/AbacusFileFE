@@ -40,3 +40,43 @@
 .read-the-docs {
   color: #888;
 }
+
+/* App.css */
+
+.appContainer {
+  padding: 16px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+.fileListContainer {
+  overflow-y: auto;
+  width: 100%;
+  max-height: calc(100vh - 150px);
+}
+
+.fileListContainerHidden {
+  overflow-y: hidden;
+  max-height: auto;
+}
+
+.header {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.headerTitle {
+  color: #000;
+  margin-left: 20px;
+}

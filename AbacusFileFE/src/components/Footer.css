@@ -1,0 +1,24 @@
+footer {
+  margin-top: 16px;
+  text-align: center;
+  background-color: #f5f5f5;
+  padding: 16px;
+  width: 100%;
+  position: relative;
+  color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footerText {
+  display: flex;
+  align-items: center;
+}
+
+.footerLink img {
+  margin-left: 0.5rem;
+  width: 20px;
+  height: 20px;
+}

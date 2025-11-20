@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Button, Typography, LinearProgress, Paper } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
+import './FileUpload.css';
 
 const FileUpload = ({ onUpload }) => {
   const [file, setFile] = useState(null);
@@ -36,33 +37,30 @@ const FileUpload = ({ onUpload }) => {
             }, 1200); // Show message after 2 seconds if still waiting
 
             // Clear timeout if upload completes
-            setTimeout(() => clearTimeout(savingTimeout), 2000);
+            setTimeout(() => {
+              clearTimeout(savingTimeout);
+              setSavingMessage(false); // Ensure saving message is cleared
+            }, 2000);
           }
         }
       });
     } catch (error) {
       console.error('Error during upload:', error);
+      handleError(error.response?.data); // Call handleError to show error snackbar
     } finally {
       setUploading(false);
-      setSavingMessage(false);
-      console.log('Upload process finished.');
+      setSavingMessage(false); // Ensure saving message is cleared in case of errors
     }
   };
 
   return (
-    <Paper elevation={3} sx={{ padding: 2, marginBottom: 4, textAlign: 'center' }}>
+    <Paper elevation={3} className="fileUploadContainer">
       <Typography variant="h6" gutterBottom>
         Upload a File
       </Typography>
       <Box
         {...getRootProps()}
-        sx={{
-          border: '2px dashed #ccc',
-          padding: 2,
-          marginBottom: 2,
-          cursor: 'pointer',
-          backgroundColor: isDragActive ? '#f0f0f0' : 'transparent',
-        }}
+        className={`fileDropZone ${isDragActive ? 'fileDropZoneActive' : ''}`}
       >
         <input {...getInputProps()} />
         {isDragActive ? (
@@ -71,23 +69,23 @@ const FileUpload = ({ onUpload }) => {
           <Typography>Drag and drop a file here, or click to select a file</Typography>
         )}
       </Box>
-      {file && <Typography variant="body1" gutterBottom>{file.name}</Typography>}
+      {file && <Typography variant="body1" className="fileName">{file.name}</Typography>}
       <Button
         variant="contained"
         color="primary"
         onClick={handleUpload}
         disabled={uploading}
-        sx={{ marginBottom: 2 }}
+        className="uploadButton"
       >
         Upload
       </Button>
       {uploading && (
-        <Box width="100%">
+        <Box className="progressBar">
           <LinearProgress variant="determinate" value={progress} />
         </Box>
       )}
       {savingMessage && (
-        <Typography variant="body2" color="textSecondary" align="center" sx={{ marginTop: 1 }}>
+        <Typography variant="body2" className="savingMessage">
           Upload is done. Saving the file to cloud storage, please wait...
         </Typography>
       )}

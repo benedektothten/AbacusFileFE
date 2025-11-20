@@ -5,6 +5,9 @@ import FileList from './components/FileList';
 import ErrorSnackbar from './components/ErrorSnackbar';
 import { getAllFiles, uploadFile, downloadFile, deleteFile } from './api/fileService';
 import { Button } from '@mui/material';
+import { Grid } from '@mui/material';
+import FileFilter from './components/FileFilter';
+import Footer from './components/Footer';
 
 const App = () => {
   const [files, setFiles] = useState([]);
@@ -80,7 +83,7 @@ const App = () => {
   };
 
   return (
-    <Box p={4} sx={{ maxWidth: '1200px', width: '100%', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '100vh', backgroundColor: '#ffffff', position: 'relative', overflow: 'hidden' }}>
+    <Box p={4} sx={{ maxWidth: '1200px', width: '100%', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '100vh', backgroundColor: '#ffffff', position: 'relative', overflow: 'auto' }}>
       <Typography variant="h4" gutterBottom align="center">
         File Management
       </Typography>
@@ -90,51 +93,39 @@ const App = () => {
           <CircularProgress />
         </Box>
       ) : (
-        <Box sx={{ overflowY: files.length > 4 ? 'auto' : 'hidden', width: '100%', maxHeight: files.length > 4 ? 'calc(100vh - 150px)' : 'auto' }}>
-          <Box display="flex" alignItems="center" justifyContent="space-between" width="100%" mb={2}>
-            <Typography variant="h6">Uploaded Files</Typography>
-            <Box display="flex" alignItems="center">
-              <input
-                type="search"
-                placeholder="Search files..."
-                value={searchQuery}
-                onChange={(e) => {
-                  const query = e.target.value;
-                  setSearchQuery(query);
-                  setFiles(originalFiles.filter((file) => file.name.toLowerCase().includes(query.toLowerCase())));
-                }}
-                style={{ padding: '8px', border: '1px solid #ccc', borderRadius: '4px', marginRight: '8px', backgroundColor: '#ffffff', color: '#000000', appearance: 'textfield', WebkitAppearance: 'searchfield' }}
-              />
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => {
-                  setSearchQuery('');
-                  setFiles(originalFiles);
-                }}
-              >
-                Clear
-              </Button>
-            </Box>
+        <Box
+          sx={{
+            width: '100%',
+            flexGrow: 1, // Allow the FileList to grow naturally within the layout
+          }}
+        >
+          <Box mb={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+            <Typography variant="h6" sx={{ color: '#000', marginLeft: '20px' }}>
+              Uploaded Files
+            </Typography>
+            <FileFilter
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              originalFiles={originalFiles}
+              setFiles={setFiles}
+            />
           </Box>
-          <FileList files={files} onDownload={handleDownload} onDelete={handleDelete} downloadingFile={downloadingFile} searchQuery={searchQuery} />
+          <FileList
+            files={files}
+            onDownload={handleDownload}
+            onDelete={handleDelete}
+            downloadingFile={downloadingFile}
+            searchQuery={searchQuery}
+          />
         </Box>
       )}
-      <ErrorSnackbar open={snackbarOpen} message={error} onClose={handleCloseSnackbar} />
-      <Box component="footer" mt={4} textAlign="center" bgcolor="#f5f5f5" p={2} width="100%" sx={{ position: 'relative', color: '#000', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1rem' }}>
-        <Typography variant="body2" color="inherit" sx={{ display: 'flex', alignItems: 'center' }}>Benedek Toth - 2025-11-10</Typography>
-        <Typography variant="body2" color="inherit" sx={{ display: 'flex', alignItems: 'center' }}>
-          Frontend: 
-          <a href="https://github.com/benedektothten/AbacusFileFE" target="_blank" rel="noopener noreferrer">
-            <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" width="20" height="20" style={{ marginLeft: '0.5rem' }} />
-          </a>
-        </Typography>
-        <Typography variant="body2" color="inherit" sx={{ display: 'flex', alignItems: 'center' }}>
-          Backend: 
-          <a href="https://github.com/benedektothten/AbacusFileService" target="_blank" rel="noopener noreferrer">
-            <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" width="20" height="20" style={{ marginLeft: '0.5rem' }} />
-          </a>
-        </Typography>
+      <ErrorSnackbar
+        open={snackbarOpen}
+        message={error}
+        onClose={handleCloseSnackbar}
+      />
+      <Box sx={{ marginTop: 'auto', marginBottom: '40px', width: '100%' }}>
+        <Footer />
       </Box>
     </Box>
   );
